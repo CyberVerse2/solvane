@@ -11,7 +11,7 @@ govern everything it does with on-chain policy.
 | **Deployed contract** | [`CBLLJCP2…R4DB`](https://stellar.expert/explorer/testnet/contract/CBLLJCP2N2TB4LJYEUGTN3NHPF7T5HZITFOBCGYEUDYFZYU4JDDVR4DB) |
 | **Contract-call tx** — `set_limit` | [`708aad6b…21cc`](https://stellar.expert/explorer/testnet/tx/708aad6b981ca0792651d06a4a4ae0b3ac6ffe22a23c285f5acc74969a4921cc) |
 | **Policy-enforced transfer** | [`b6f3132e…e48c`](https://stellar.expert/explorer/testnet/tx/b6f3132e6e78b1882fc1b18cc1005f7adbcb86af04585805eb2978e7c440e48c) |
-| **Live demo** | _deploy to Vercel/Netlify and paste the URL here_ |
+| **Live demo** | https://solvane.cyberverse.cloud |
 
 **Sign in with** (any stellar supported wallet, powered by [Stellar Wallets Kit](https://stellarwalletskit.dev)): Supports
 Freighter · xBull · Albedo · Rabet · Hana · LOBSTR
