@@ -13,7 +13,7 @@ govern everything it does with on-chain policy.
 | **Policy-enforced transfer** | [`b6f3132e…e48c`](https://stellar.expert/explorer/testnet/tx/b6f3132e6e78b1882fc1b18cc1005f7adbcb86af04585805eb2978e7c440e48c) |
 | **Live demo** | _deploy to Vercel/Netlify and paste the URL here_ |
 
-**Sign in with** (multi-wallet, via [Stellar Wallets Kit](https://stellarwalletskit.dev)):
+**Sign in with** (any stellar supported wallet, powered by [Stellar Wallets Kit](https://stellarwalletskit.dev)): Supports
 Freighter · xBull · Albedo · Rabet · Hana · LOBSTR
 
 ![Solvane wallet options](docs/wallet-options.png)
