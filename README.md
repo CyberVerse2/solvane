@@ -19,9 +19,7 @@ Freighter · xBull · Albedo · Rabet · Hana · LOBSTR
 
 ![Solvane wallet options](docs/wallet-options.png)
 
-## Screenshot
-
-![Solvane console overview](docs/console-overview.png)
+![Solvane console overview](docs/console-overview.jpg)
 
 ## Setup
 
