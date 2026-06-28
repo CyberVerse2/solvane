@@ -1,7 +1,8 @@
-# Agent Wallet Infrastructure on Stellar
+# Solvane
 
-Wallet infrastructure for AI agents — create a wallet for an agent and govern
-everything it does with on-chain policy. Think Crossmint, built on Stellar/Soroban.
+Wallet infrastructure for AI agents on Stellar — create a wallet for an agent and
+govern everything it does with on-chain policy. Think Crossmint, built on
+Stellar/Soroban.
 
 ## Why Stellar
 
