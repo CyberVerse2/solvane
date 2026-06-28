@@ -19,7 +19,7 @@ import { SolvaneLogo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 
 const nav = [
-  { href: "/", label: "Overview", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/agents", label: "Agents", icon: Bot },
   { href: "/activity", label: "Activity", icon: Activity },
   { href: "/policies", label: "Policies", icon: ShieldCheck },
@@ -37,8 +37,7 @@ export function MobileNav() {
   // Close the drawer whenever the route changes.
   useEffect(() => setOpen(false), [pathname]);
 
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string) => pathname.startsWith(href);
 
   return (
     <>

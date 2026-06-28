@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import { AppShell } from "@/components/app-shell";
 import { WalletProvider } from "@/components/wallet-provider";
 
 const hanken = Hanken_Grotesk({
@@ -35,9 +34,7 @@ export default function RootLayout({
         />
       </head>
       <body className={`${hanken.variable} ${plexMono.variable} grain antialiased`}>
-        <WalletProvider>
-          <AppShell>{children}</AppShell>
-        </WalletProvider>
+        <WalletProvider>{children}</WalletProvider>
       </body>
     </html>
   );

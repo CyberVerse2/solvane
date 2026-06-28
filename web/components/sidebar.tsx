@@ -15,7 +15,7 @@ import { SolvaneLogo } from "@/components/logo";
 import { cn } from "@/lib/utils";
 
 const nav = [
-  { href: "/", label: "Overview", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { href: "/agents", label: "Agents", icon: Bot },
   { href: "/activity", label: "Activity", icon: Activity },
   { href: "/policies", label: "Policies", icon: ShieldCheck },
@@ -29,13 +29,12 @@ const footerNav = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (href: string) => pathname.startsWith(href);
 
   return (
     <aside className="sticky top-0 hidden h-screen w-[244px] shrink-0 flex-col border-r border-line bg-panel/60 px-3 py-5 backdrop-blur-xl lg:flex">
       <div className="px-2.5 pb-6">
-        <Link href="/">
+        <Link href="/dashboard">
           <SolvaneLogo />
         </Link>
       </div>
