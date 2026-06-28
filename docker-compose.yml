@@ -29,13 +29,22 @@ services:
       AGENT_SECRET: ${AGENT_SECRET:-}
       AGENT_PUBKEY_HEX: ${AGENT_PUBKEY_HEX:-5bdc702e29d1e6816112a3ddaf94e47f0a511f23930b8647a8eee5f869723a11}
     # The app listens on 3000 inside the container. No host ports are published:
-    # behind a reverse proxy (Dokploy/Traefik) the container is reached over the
-    # internal network on port 3000 — set "Container Port" to 3000 in the proxy.
+    # Dokploy/Traefik reaches it over the dokploy-network on port 3000 — set
+    # "Container Port" to 3000 in the Domain config.
     expose:
       - "3000"
+    networks:
+      - default          # to reach the db service
+      - dokploy-network  # so Traefik can route the domain to this container
 
 volumes:
   pgdata:
+
+networks:
+  # Dokploy's Traefik runs on this external network; the web service must join
+  # it to be routable. Created by Dokploy — referenced here as external.
+  dokploy-network:
+    external: true
 
 # Local host access (optional): run `docker compose -f docker-compose.yml -f
 # docker-compose.local.yml up` or just use `cd web && npm run dev`.

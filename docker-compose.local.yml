@@ -1,5 +1,10 @@
 # Local-only overrides: publish container ports to the host so you can reach
 # the app and database without a reverse proxy.
+#
+# The base compose joins the web service to the external `dokploy-network`
+# (needed on Dokploy). To run locally, create it once first:
+#   docker network create dokploy-network
+# Then:
 #   docker compose -f docker-compose.yml -f docker-compose.local.yml up --build
 services:
   web:
