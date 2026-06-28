@@ -39,6 +39,22 @@ cd ../web && npm install && npm run dev       # http://localhost:3000
 npm test                                      # vitest
 ```
 
+## Docker (console + Postgres)
+
+The console and a Postgres database run with one command. The agent registry —
+wallets created from the console — is persisted in Postgres (`agents` table,
+schema auto-created on first use). The image also compiles the contract wasm in
+a Rust build stage, so no host toolchain is needed.
+
+```bash
+cp .env.docker.example .env      # optional: add RELAYER_SECRET / AGENT_SECRET
+docker compose up --build        # web on http://localhost:3000, db on :5432
+```
+
+`web/Dockerfile` is a multi-stage build (Rust → wasm, Node deps, Next standalone,
+minimal runtime). Reads work with no secrets; create-wallet and `set_limit` need
+the relayer + agent keys in `.env`.
+
 ## Why Stellar
 
 - **Soroban custom accounts** (`__check_auth`) put spend limits, allowlists and
