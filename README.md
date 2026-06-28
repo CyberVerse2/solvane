@@ -128,16 +128,6 @@ cd web && npm install && npm run dev      # http://localhost:3000
 npm test                                  # vitest
 ```
 
-## Levels
-
-- **L1 — Freighter + payments:** ✅ connect/disconnect, testnet, balance, send XLM
-  with feedback + hash.
-- **L2 — contract from frontend:** ✅ deployed contract, called from the console
-  (reads + `set_limit` write), visible tx status, 3+ error types, real commits.
-- **L3 — production practices:** ✅ advanced contract (custom account + policy),
-  inter-contract calls (wallet → token SAC), event streaming, CI/CD, mobile-
-  responsive nav, error/loading states, contract + frontend tests, docs.
-
 ## Roadmap (next)
 
 1. Validate the signed transfer end-to-end; add a deny-path demo (over-limit /

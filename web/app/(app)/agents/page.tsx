@@ -14,8 +14,10 @@ const statusTone: Record<WalletStatus, "positive" | "warning" | "danger"> = {
   frozen: "danger",
 };
 
-export default function AgentsPage() {
-  const agents = getAllAgents();
+export const dynamic = "force-dynamic";
+
+export default async function AgentsPage() {
+  const agents = await getAllAgents();
   return (
     <>
       <PageHeader

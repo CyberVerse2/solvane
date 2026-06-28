@@ -49,7 +49,7 @@ export async function createWalletAction(
       input.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") ||
       `agent-${res.address.slice(2, 7).toLowerCase()}`;
 
-    addCreatedAgent({
+    await addCreatedAgent({
       id: slug,
       name: input.name.trim() || "Unnamed agent",
       model: input.model,

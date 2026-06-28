@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: solvane
+      POSTGRES_PASSWORD: solvane
+      POSTGRES_DB: solvane
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U solvane -d solvane"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    ports:
+      - "5432:5432"
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://solvane:solvane@db:5432/solvane
+      SOROBAN_RPC_URL: ${SOROBAN_RPC_URL:-https://soroban-testnet.stellar.org}
+      SIM_SOURCE: ${SIM_SOURCE:-GAHZHQ2PSDTSJI7MRAWNBDVGUJ5L25OCXIXRXZTOEJB72UDERE2NHORJ}
+      # Reads work without secrets; create-wallet + set-limit need these.
+      RELAYER_SECRET: ${RELAYER_SECRET:-}
+      AGENT_SECRET: ${AGENT_SECRET:-}
+      AGENT_PUBKEY_HEX: ${AGENT_PUBKEY_HEX:-5bdc702e29d1e6816112a3ddaf94e47f0a511f23930b8647a8eee5f869723a11}
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:

@@ -1,0 +1,14 @@
+# Build context = repo root. The contract wasm is recompiled in-image, so the
+# host's cargo target is excluded.
+**/node_modules
+**/.next
+target
+.git
+.github
+docs
+**/.env
+**/.env.*
+web/data
+*.md
+*.log
+.DS_Store

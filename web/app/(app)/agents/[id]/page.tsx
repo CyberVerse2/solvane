@@ -30,7 +30,7 @@ export default async function AgentDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const agent = findAgent(id);
+  const agent = await findAgent(id);
   if (!agent) notFound();
 
   const live =

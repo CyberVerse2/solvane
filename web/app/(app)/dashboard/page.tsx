@@ -10,8 +10,10 @@ import { activity, totals } from "@/lib/data";
 import { getAllAgents } from "@/lib/agents-store";
 import { fmtAmount } from "@/lib/utils";
 
-export default function OverviewPage() {
-  const agents = getAllAgents();
+export const dynamic = "force-dynamic";
+
+export default async function OverviewPage() {
+  const agents = await getAllAgents();
   const liveAgent = agents.find((a) => a.deployed);
   return (
     <>

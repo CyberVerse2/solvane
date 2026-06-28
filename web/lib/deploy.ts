@@ -22,14 +22,11 @@ const RPC_URL = process.env.SOROBAN_RPC_URL ?? "https://soroban-testnet.stellar.
 const NETWORK = Networks.TESTNET;
 const server = new rpc.Server(RPC_URL);
 
-const WASM_PATH = join(
-  process.cwd(),
-  "..",
-  "target",
-  "wasm32v1-none",
-  "release",
-  "smart_wallet.wasm",
-);
+// In Docker the compiled wasm is copied to a fixed path (SMART_WALLET_WASM);
+// locally it sits in the cargo target dir relative to the web app.
+const WASM_PATH =
+  process.env.SMART_WALLET_WASM ??
+  join(process.cwd(), "..", "target", "wasm32v1-none", "release", "smart_wallet.wasm");
 
 async function submit(source: Keypair, op: xdr.Operation) {
   const account = await server.getAccount(source.publicKey());
