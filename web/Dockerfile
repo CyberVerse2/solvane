@@ -10,27 +10,33 @@ COPY contracts ./contracts
 RUN cargo build -p smart-wallet --release --target wasm32v1-none
 
 # ── 2. Install node dependencies ─────────────────────────────────────────────
-FROM node:22-alpine AS deps
+# Debian-based node (not alpine): the wallet-kit pulls native modules (usb,
+# blake-hash) via its hardware-wallet support. node:22 ships Python + a C
+# toolchain and these resolve to glibc prebuilds, so `npm ci` just works.
+FROM node:22 AS deps
 WORKDIR /app
+# Toolchain + libudev so `usb`/`blake-hash` build if no glibc prebuild is found.
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends python3 build-essential libudev-dev \
+  && rm -rf /var/lib/apt/lists/*
 COPY web/package.json web/package-lock.json ./
 RUN npm ci
 
 # ── 3. Build the Next.js console (standalone output) ─────────────────────────
-FROM node:22-alpine AS build
+FROM node:22 AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY web/ ./
 RUN npm run build
 
-# ── 4. Minimal runtime image ─────────────────────────────────────────────────
-FROM node:22-alpine AS runner
+# ── 4. Minimal runtime image (glibc, to match anything traced at build) ──────
+FROM node:22-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
-RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
 
 COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next/static ./.next/static
@@ -39,6 +45,6 @@ COPY --from=build /app/public ./public
 COPY --from=contract /src/target/wasm32v1-none/release/smart_wallet.wasm /app/smart_wallet.wasm
 ENV SMART_WALLET_WASM=/app/smart_wallet.wasm
 
-USER nextjs
+USER node
 EXPOSE 3000
 CMD ["node", "server.js"]
