@@ -19,6 +19,10 @@ Freighter · xBull · Albedo · Rabet · Hana · LOBSTR
 
 ![Solvane wallet options](docs/wallet-options.png)
 
+## Screenshot
+
+![Solvane console overview](docs/console-overview.png)
+
 ## Setup
 
 Prerequisites: Rust + `wasm32v1-none` target, the [Stellar CLI](https://developers.stellar.org/docs/tools/cli), and Node 20+.
