@@ -12,8 +12,10 @@ services:
       interval: 5s
       timeout: 3s
       retries: 12
+    # Host port for your own access only; the app reaches the DB at db:5432 on
+    # the internal network. Defaults to 5433 to avoid a local Postgres on 5432.
     ports:
-      - "5432:5432"
+      - "${DB_PORT:-5433}:5432"
 
   web:
     build:
@@ -31,7 +33,7 @@ services:
       AGENT_SECRET: ${AGENT_SECRET:-}
       AGENT_PUBKEY_HEX: ${AGENT_PUBKEY_HEX:-5bdc702e29d1e6816112a3ddaf94e47f0a511f23930b8647a8eee5f869723a11}
     ports:
-      - "3000:3000"
+      - "${WEB_PORT:-3000}:3000"
 
 volumes:
   pgdata:
