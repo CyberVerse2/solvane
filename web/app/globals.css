@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────
+   SOLVANE — design tokens
+   A control-room palette for autonomous agent money: deep obsidian,
+   hairline instrumentation grids, a single signal-lime accent.
+   ────────────────────────────────────────────────────────────── */
+@theme inline {
+  --color-bg: #08090b;
+  --color-panel: #0d0e11;
+  --color-elevated: #14161b;
+  --color-line: rgba(255, 255, 255, 0.07);
+  --color-line-strong: rgba(255, 255, 255, 0.13);
+  --color-ink: #e9ebee;
+  --color-muted: #888f9b;
+  --color-faint: #565c67;
+  --color-signal: #c8fa4b;
+  --color-signal-soft: rgba(200, 250, 75, 0.12);
+  --color-positive: #5ee6a0;
+  --color-warning: #f4b740;
+  --color-danger: #ff6a5f;
+  --color-info: #74a9ff;
+
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-display: "Clash Display", var(--font-hanken), sans-serif;
+
+  --radius: 8px;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv01";
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: #0a0b0d;
+  }
+
+  /* Thin, instrument-style scrollbars */
+  ::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* ── Utilities ─────────────────────────────────────────────── */
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Hairline instrumentation grid background */
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* Faint radial vignette + signal bloom at top */
+  .canvas-atmos {
+    background:
+      radial-gradient(900px 420px at 78% -8%, rgba(200, 250, 75, 0.06), transparent 70%),
+      radial-gradient(700px 500px at 0% 0%, rgba(116, 169, 255, 0.04), transparent 60%);
+  }
+
+  .grain::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .hairline {
+    border: 1px solid var(--color-line);
+  }
+
+  .glow-signal {
+    box-shadow:
+      0 0 0 1px rgba(200, 250, 75, 0.35),
+      0 0 24px -6px rgba(200, 250, 75, 0.5);
+  }
+
+  .panel {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.018), transparent 40%),
+      var(--color-panel);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+  }
+
+  /* Staggered page-load reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes reveal {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .pulse-dot {
+    animation: pulse-dot 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgba(94, 230, 160, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 0 4px rgba(94, 230, 160, 0);
+    }
+  }
+
+  .ticker {
+    animation: ticker 32s linear infinite;
+  }
+  @keyframes ticker {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
