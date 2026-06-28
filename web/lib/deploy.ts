@@ -52,6 +52,28 @@ async function submit(source: Keypair, op: xdr.Operation) {
   return got;
 }
 
+// A freshly uploaded wasm can take a few ledgers to become visible to the RPC's
+// simulation state ("Wasm does not exist"); retry with backoff to ride it out.
+async function submitWithRetry(
+  source: Keypair,
+  op: xdr.Operation,
+  attempts = 8,
+  delayMs = 2500,
+) {
+  let lastErr: unknown;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await submit(source, op);
+    } catch (e) {
+      lastErr = e;
+      if (i < attempts - 1) await new Promise((r) => setTimeout(r, delayMs));
+    }
+  }
+  throw lastErr instanceof Error
+    ? lastErr
+    : new Error("submit failed after retries");
+}
+
 export interface DeployResult {
   address: string;
   ownerPubkeyHex: string;
@@ -70,10 +92,14 @@ export async function deploySmartWallet(): Promise<DeployResult> {
   const ownerPubkeyHex = Buffer.from(owner.rawPublicKey()).toString("hex");
   const wasm = readFileSync(WASM_PATH);
 
-  const uploaded = await submit(relayer, Operation.uploadContractWasm({ wasm }));
+  const uploaded = await submitWithRetry(
+    relayer,
+    Operation.uploadContractWasm({ wasm }),
+  );
   const wasmHash = uploaded.returnValue!.bytes();
 
-  const deployed = await submit(
+  // Fixed salt so retries target the same contract address.
+  const deployed = await submitWithRetry(
     relayer,
     Operation.createCustomContract({
       address: Address.fromString(relayer.publicKey()),
