@@ -6,7 +6,7 @@ import { X, Check, Loader2, TriangleAlert, ExternalLink, Send } from "lucide-rea
 import { Button, Copyable } from "@/components/ui";
 import { useWallet } from "@/components/wallet-provider";
 import { sendXlm } from "@/lib/horizon";
-import { WalletError } from "@/lib/freighter";
+import { WalletError } from "@/lib/wallet-kit";
 import { shortAddr } from "@/lib/utils";
 
 /** The Solvane fee relayer — a meaningful default recipient (top it up). */

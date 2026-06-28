@@ -14,6 +14,7 @@ const server = new rpc.Server(RPC_URL);
 export interface WalletEvent {
   id: string;
   ledger: number;
+  at: string; // ISO close time
   direction: "in" | "out";
   counterparty: string;
   amount: number;
@@ -52,6 +53,7 @@ export async function getWalletEvents(wallet: string): Promise<WalletEvent[]> {
       out.push({
         id: ev.id,
         ledger: ev.ledger,
+        at: ev.ledgerClosedAt,
         direction: isOut ? "out" : "in",
         counterparty: isOut ? to : from,
         amount,

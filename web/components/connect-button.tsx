@@ -7,7 +7,8 @@ import { SendXlmDialog } from "@/components/send-xlm-dialog";
 import { shortAddr } from "@/lib/utils";
 
 export function ConnectButton() {
-  const { address, balance, connecting, error, connect, disconnect } = useWallet();
+  const { address, balance, walletLabel, connecting, error, connect, disconnect } =
+    useWallet();
   const [menu, setMenu] = useState(false);
   const [sendOpen, setSendOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -70,7 +71,7 @@ export function ConnectButton() {
         <div className="absolute right-0 top-[calc(100%+6px)] z-30 w-60 overflow-hidden rounded-xl border border-line-strong bg-panel shadow-2xl">
           <div className="border-b border-line px-3.5 py-3">
             <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-faint">
-              Operator wallet
+              Operator · {walletLabel}
             </p>
             <button
               onClick={() => {

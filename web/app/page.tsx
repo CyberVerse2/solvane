@@ -3,9 +3,8 @@ import { ArrowRight, ShieldCheck, Ban, Gauge } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { StatTile } from "@/components/stat-tile";
 import { SpendChart } from "@/components/spend-chart";
-import { ActivityRow } from "@/components/activity-row";
+import { ActivityFeed } from "@/components/activity-feed";
 import { CreateAgentDrawer } from "@/components/create-agent-drawer";
-import { LiveEvents } from "@/components/live-events";
 import { Eyebrow } from "@/components/ui";
 import { activity, totals } from "@/lib/data";
 import { getAllAgents } from "@/lib/agents-store";
@@ -13,7 +12,7 @@ import { fmtAmount } from "@/lib/utils";
 
 export default function OverviewPage() {
   const agents = getAllAgents();
-  const liveWallet = agents.find((a) => a.deployed)?.address;
+  const liveAgent = agents.find((a) => a.deployed);
   return (
     <>
       <PageHeader
@@ -104,32 +103,15 @@ export default function OverviewPage() {
         </div>
       </div>
 
-      {/* Activity */}
-      <div className="reveal panel mt-3.5 overflow-hidden" style={{ animationDelay: "240ms" }}>
-        <div className="flex items-center justify-between border-b border-line px-5 py-3.5">
-          <div className="flex items-center gap-2.5">
-            <h2 className="text-[15px] text-ink">Recent activity</h2>
-            <span className="pulse-dot h-1.5 w-1.5 rounded-full bg-positive" />
-          </div>
-          <Link
-            href="/activity"
-            className="flex items-center gap-1.5 font-mono text-[12px] text-muted transition-colors hover:text-ink"
-          >
-            View all <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
-        </div>
-        <div className="divide-y divide-line">
-          {activity.slice(0, 6).map((e) => (
-            <ActivityRow key={e.id} e={e} />
-          ))}
-        </div>
+      {/* Unified activity — live on-chain events merged with the recorded log */}
+      <div className="mt-3.5">
+        <ActivityFeed
+          seeded={activity}
+          wallet={liveAgent?.address}
+          agentId={liveAgent?.id ?? "vega"}
+          agentName={liveAgent?.name ?? "Vega"}
+        />
       </div>
-
-      {liveWallet && (
-        <div className="mt-3.5">
-          <LiveEvents wallet={liveWallet} />
-        </div>
-      )}
 
       <p className="mt-5 text-center font-mono text-[11px] text-faint">
         {agents.length} agents · {totals.tx24h.toLocaleString()} transactions in the

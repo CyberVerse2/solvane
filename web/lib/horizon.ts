@@ -13,7 +13,7 @@ import {
   Networks,
   StrKey,
 } from "@stellar/stellar-sdk";
-import { sign, WalletError } from "./freighter";
+import { signXdr, WalletError } from "./wallet-kit";
 
 const HORIZON_URL = "https://horizon-testnet.stellar.org";
 const server = new Horizon.Server(HORIZON_URL);
@@ -77,7 +77,7 @@ export async function sendXlm(opts: {
     .setTimeout(120)
     .build();
 
-  const signedXdr = await sign(tx.toXDR(), from);
+  const signedXdr = await signXdr(tx.toXDR(), from);
   const signed = TransactionBuilder.fromXDR(signedXdr, Networks.TESTNET);
 
   try {
