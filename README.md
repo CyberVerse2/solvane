@@ -1,10 +1,9 @@
 # Solvane
 
 Wallet infrastructure for AI agents on Stellar — create a wallet for an agent and
-govern everything it does with on-chain policy. Think Crossmint, built on
-Stellar/Soroban.
+govern everything it does with on-chain policy.
 
-## Demo & on-chain proof
+## Demo
 
 | | |
 |---|---|
@@ -40,17 +39,14 @@ cd ../web && npm install && npm run dev       # http://localhost:3000
 npm test                                      # vitest
 ```
 
-Secrets (`service/.env`, `web/.env.local`) are git-ignored. The console reads
-on-chain state with no secret; only deploy/write use the relayer key.
-
 ## Why Stellar
 
 - **Soroban custom accounts** (`__check_auth`) put spend limits, allowlists and
-  signer rules *in the authorization path*. A leaked agent session key still
+  signer rules *in authorization*. A leaked agent session key still
   can't exceed its policy.
-- **Relayer-paid fees** — agent wallets hold zero XLM; a relayer account pays
-  gas. Native "gasless" UX (extendable to Launchtube).
-- **Native USDC** for stable-value agent payments.
+- **Relayer-paid fees** — agent wallets don't need to hold xlm; a relayer account pays
+  gas for all your wallet which makes for really cool native "gasless" UX.
+- **Native USDC** We only support Stellar USDC for agent operations for now.
 
 ## Custody model
 
@@ -62,18 +58,17 @@ The platform/agent holds an ed25519 signer; on-chain policy bounds spending.
 
 ```
 contracts/smart-wallet/   Soroban contract (Rust): signers, policy, __check_auth
-service/                  TypeScript service + scripts (deploy, keys, set-limit, transfer)
-web/                      Solvane console (Next.js 16, React 19, Tailwind v4)
-.github/workflows/ci.yml  CI: contract test+build wasm, frontend test+build
+service/                  helper scripts (deploy, keys, set-limit, transfer)
+web/                      Solvane human console (Next.js 16, React 19, Tailwind v4)
+.github/workflows/ci.yml  CI: contract test+build wasm and frontend test+build workflow
 ```
 
 ## Two wallet roles
 
-- **Operator wallet (Freighter)** — the *human* who signs up, funds the platform,
-  and provisions agents. Connect/disconnect, XLM balance, and Freighter-signed
-  XLM payments live in the console topbar.
+- **Operator wallet** — the *human* who signs up, funds the platform,
+  and provisions agents
 - **Agent wallets (Soroban smart accounts)** — the autonomous agents' wallets,
-  governed by on-chain policy. Created and funded by the operator; never a browser
+  governed by the operator wallet. Created and funded by the operator; never a browser
   wallet.
 
 ## Smart-wallet contract
@@ -153,4 +148,4 @@ npm test                                  # vitest
    per-agent API keys, idempotency keys, webhooks/audit log.
 5. **Kill-switch & signer rotation**; session-key issuance with expiry.
 6. **Launchtube** integration for fee sponsorship at scale.
-7. Mainnet hardening: contract audit, key management (KMS/HSM), observability.
+7. Hardening in preparation for mainnet: contract audit, key management (KMS/HSM), observability.
