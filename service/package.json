@@ -1,0 +1,21 @@
+{
+  "name": "agent-wallet-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Wallet infrastructure service for AI agents on Stellar",
+  "scripts": {
+    "keys": "tsx src/scripts/gen-keys.ts",
+    "deploy": "tsx src/scripts/deploy.ts",
+    "demo": "tsx src/scripts/demo.ts"
+  },
+  "dependencies": {
+    "@stellar/stellar-sdk": "^16.0.1",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.0"
+  }
+}
