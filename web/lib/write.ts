@@ -42,8 +42,13 @@ async function signedInvoke(
   method: string,
   args: xdr.ScVal[],
 ): Promise<string> {
-  const relayer = Keypair.fromSecret(process.env.RELAYER_SECRET!);
-  const agent = Keypair.fromSecret(process.env.AGENT_SECRET!);
+  if (!process.env.RELAYER_SECRET || !process.env.AGENT_SECRET) {
+    throw new Error(
+      "RELAYER_SECRET and AGENT_SECRET must be set on the server to sign policy writes. Add them to the environment and redeploy.",
+    );
+  }
+  const relayer = Keypair.fromSecret(process.env.RELAYER_SECRET);
+  const agent = Keypair.fromSecret(process.env.AGENT_SECRET);
 
   const hostOp = new Contract(contractId).call(method, ...args);
   const hostFn = hostOp.body().invokeHostFunctionOp().hostFunction();

@@ -60,7 +60,12 @@ export interface DeployResult {
 }
 
 export async function deploySmartWallet(): Promise<DeployResult> {
-  const relayer = Keypair.fromSecret(process.env.RELAYER_SECRET!);
+  if (!process.env.RELAYER_SECRET) {
+    throw new Error(
+      "RELAYER_SECRET is not configured on the server, so deployment fees can't be paid. Set RELAYER_SECRET (a funded testnet S… key) in the environment and redeploy.",
+    );
+  }
+  const relayer = Keypair.fromSecret(process.env.RELAYER_SECRET);
   const owner = Keypair.random();
   const ownerPubkeyHex = Buffer.from(owner.rawPublicKey()).toString("hex");
   const wasm = readFileSync(WASM_PATH);
