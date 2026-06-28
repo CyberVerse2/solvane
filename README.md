@@ -4,6 +4,43 @@ Wallet infrastructure for AI agents on Stellar — create a wallet for an agent 
 govern everything it does with on-chain policy. Think Crossmint, built on
 Stellar/Soroban.
 
+## Demo & on-chain proof
+
+| | |
+|---|---|
+| **Network** | Stellar Testnet |
+| **Deployed contract** | [`CBLLJCP2…R4DB`](https://stellar.expert/explorer/testnet/contract/CBLLJCP2N2TB4LJYEUGTN3NHPF7T5HZITFOBCGYEUDYFZYU4JDDVR4DB) |
+| **Contract-call tx** — `set_limit` | [`708aad6b…21cc`](https://stellar.expert/explorer/testnet/tx/708aad6b981ca0792651d06a4a4ae0b3ac6ffe22a23c285f5acc74969a4921cc) |
+| **Policy-enforced transfer** | [`b6f3132e…e48c`](https://stellar.expert/explorer/testnet/tx/b6f3132e6e78b1882fc1b18cc1005f7adbcb86af04585805eb2978e7c440e48c) |
+| **Live demo** | _deploy to Vercel/Netlify and paste the URL here_ |
+
+**Sign in with** (multi-wallet, via [Stellar Wallets Kit](https://stellarwalletskit.dev)):
+Freighter · xBull · Albedo · Rabet · Hana · LOBSTR
+
+![Solvane wallet options](docs/wallet-options.png)
+
+## Setup
+
+Prerequisites: Rust + `wasm32v1-none` target, the [Stellar CLI](https://developers.stellar.org/docs/tools/cli), and Node 20+.
+
+```bash
+# 1. Build the smart-wallet contract → wasm
+stellar contract build
+
+# 2. Service: install deps, generate + fund a relayer, deploy a wallet
+cd service && npm install && npm run keys && npm run deploy
+#   then prove the policy path end-to-end on testnet:
+npm run -s tsx src/scripts/set-limit.ts     # signed set_limit through __check_auth
+npx tsx src/scripts/demo-transfer.ts         # approved + policy-blocked transfer
+
+# 3. Console (Next.js)
+cd ../web && npm install && npm run dev       # http://localhost:3000
+npm test                                      # vitest
+```
+
+Secrets (`service/.env`, `web/.env.local`) are git-ignored. The console reads
+on-chain state with no secret; only deploy/write use the relayer key.
+
 ## Why Stellar
 
 - **Soroban custom accounts** (`__check_auth`) put spend limits, allowlists and
