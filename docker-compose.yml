@@ -12,10 +12,6 @@ services:
       interval: 5s
       timeout: 3s
       retries: 12
-    # Host port for your own access only; the app reaches the DB at db:5432 on
-    # the internal network. Defaults to 5433 to avoid a local Postgres on 5432.
-    ports:
-      - "${DB_PORT:-5433}:5432"
 
   web:
     build:
@@ -32,8 +28,14 @@ services:
       RELAYER_SECRET: ${RELAYER_SECRET:-}
       AGENT_SECRET: ${AGENT_SECRET:-}
       AGENT_PUBKEY_HEX: ${AGENT_PUBKEY_HEX:-5bdc702e29d1e6816112a3ddaf94e47f0a511f23930b8647a8eee5f869723a11}
-    ports:
-      - "${WEB_PORT:-3000}:3000"
+    # The app listens on 3000 inside the container. No host ports are published:
+    # behind a reverse proxy (Dokploy/Traefik) the container is reached over the
+    # internal network on port 3000 — set "Container Port" to 3000 in the proxy.
+    expose:
+      - "3000"
 
 volumes:
   pgdata:
+
+# Local host access (optional): run `docker compose -f docker-compose.yml -f
+# docker-compose.local.yml up` or just use `cd web && npm run dev`.

@@ -1,0 +1,10 @@
+# Local-only overrides: publish container ports to the host so you can reach
+# the app and database without a reverse proxy.
+#   docker compose -f docker-compose.yml -f docker-compose.local.yml up --build
+services:
+  web:
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+  db:
+    ports:
+      - "${DB_PORT:-5433}:5432"
